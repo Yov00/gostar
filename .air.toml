@@ -1,0 +1,44 @@
+# .air.toml
+
+# General settings
+root = "."      # Root directory of your project
+tmp_dir = "tmp" # Temp folder Air will use
+
+[build]
+bin = "./tmp/main" # Output binary name
+cmd = "go build -tags dev -o tmp/main cmd/app/main.go" # Build command
+delay = 20 # Delay in milliseconds before restarting (for batching changes)
+kill_delay = "0s"
+include_ext = ["go", "tpl", "tmpl", "html", "templ"] # Watch these extensions
+exclude_dir = [
+    "vendor",
+    "tmp",
+    "node_modules",
+    "assets",
+] # Skip these directories
+exclude_regex = [".*_templ.go"]
+exclude_unchanged = false
+exclude_file = [] # You can add specific files to exclude here
+follow_symlink = false
+stop_on_error = true # Stop execution if build fails
+log = "build-errors.log" # Log build errors here
+full_bin = ""
+
+[run]
+cmd = "tmp/main" # Command to run your built binary
+watch_dir = "."  # Directory to watch
+watch_log = true
+grace_time = 0   # Time to wait before restarting the server (ms)
+forward = true   # Forward signals (like Ctrl+C) to subprocess
+output = ""      # Leave empty to output to terminal
+
+[color]
+main = "yellow"
+watcher = "cyan"
+build = "green"
+runner = "magenta"
+error = "red"
+
+
+[misc]
+clean_on_exit = false
