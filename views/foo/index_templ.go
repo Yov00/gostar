@@ -43,7 +43,7 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div>Delay</div><h1>One step behind</h1><button>It's almost insta but it's not</button><h1>Its all abou that baze</h1><h5>My abbss</h5>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"bg-red-600\">Delay</div><h1>One step behind</h1><button>It's almost insta but it's not</button><h1>Its all abou that baze</h1><p style=\"color:red;\">go trouble save, boom its there!\t</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

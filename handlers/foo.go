@@ -11,3 +11,7 @@ type Foo struct {
 func (f *Foo) HandleFoo(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, foo.Index())
 }
+
+func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, foo.Moo())
+}

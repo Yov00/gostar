@@ -20,9 +20,16 @@ func main() {
 	fooHandler := &handlers.Foo{}
 	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
 
-	fmt.Println("Hello to test actually")
+	router.Get("/sex", handlers.Make(fooHandler.HandleMoo))
+
+	path, _ := os.Getwd()
+	fmt.Println(path)
+
+	fileServer := http.FileServer(http.Dir(path + "/cmd/app/public"))
+	router.Handle("/assets/*", fileServer)
 
 	listenAddr := os.Getenv("LISTEN_ADDR")
 	slog.Info("HTTP server started", "listenAddr", listenAddr)
 	http.ListenAndServe(listenAddr, router)
+
 }
