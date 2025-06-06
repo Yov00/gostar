@@ -29,7 +29,7 @@ func App() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GO Started </title><link rel=\"stylesheet\" type=\"text/css\" href=\"/assets/app.css\"></head><body><div class=\"flex gap-4 my-[200px]\"><h1 class=\"text-3xl p-4 border text-amber-800 bg-background \">Assembly</h1><h6 class=\"text-3xl p-4 text-red-600 border\">humans can write</h6></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GO Started </title><link rel=\"stylesheet\" type=\"text/css\" href=\"/assets/app.css\"></head><body><div class=\"flex gap-4 bg-green-400 my-[200px]\"><h1 class=\"text-3xl p-4 border text-amber-800 bg-background \">Assembly</h1><h6 class=\"text-3xl p-4 text-red-600 border\">human write</h6></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
