@@ -3,14 +3,35 @@ package foo
 import "templ_workout/views/layouts"
 
 templ Index() {
-	@layouts.App() {
-		<div class="bg-red-600">Delay</div>
-		<h1>One step behind</h1>
-		<button>It's almost insta but it's not</button>
-		<h1>Its all abou that baze</h1>
-		<p style="text-red-400">
-			go trouble
-			save, boom its there!	
-		</p>
-	}
+@layouts.App() {
+<section id="hero" class="min-h-screen bg-amber-500">
+
+</section>
+<section id="about" class="  py-40">
+
+	<div class="container   mx-auto grid grid-cols-1 gap-3 md:grid-cols-2">
+		<div class="flex items-center justify-center">
+			<h2 class="text-9xl ">
+				Abel ister!
+			</h2>
+		</div>
+		<div class="flex flex-col gap-5 justify-center">
+			<p class="text-2xl ">
+				This fuking amazing caffe in Paris is so great!
+			</p>
+
+			<p class="text-2xl ">
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate cumque aliquam architecto pariatur
+				ipsam perspiciatis consequatur corporis officia facere, non vitae culpa esse suscipit excepturi facilis
+				doloremque reiciendis enim nisi quam molestiae recusandae. Assumenda perferendis vitae quos suscipit est
+				hic praesentium, enim repudiandae nisi voluptates ratione harum consequuntur non in?
+
+			</p>
+			<p class="text-2xl ">
+				This fuking amazing caffe in Paris is so great!
+			</p>
+		</div>
+	</div>
+</section>
+}
 }
