@@ -1,19 +1,23 @@
 package layouts
 
-templ App(nav bool) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>GO Started </title>
-			<link rel="stylesheet" type="text/css" href="/assets/app.css"/>
-		</head>
-		<body>
-			// if nav {
-			//     @ui.Navigation()
-			// }
-			{ children... }
-		</body>
-	</html>
+templ App() {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>GO Started </title>
+	<link rel="stylesheet" type="text/css" href="/assets/app.css" />
+</head>
+
+<body>
+	<div class="flex gap-4 my-[200px]">
+		<h1 class="text-3xl p-4 border text-amber-800 bg-background ">Assembly</h1>
+		<h6 class="text-3xl p-4 text-red-600 border">humans can write</h6>
+	</div>
+	{ children... }
+</body>
+
+</html>
 }
