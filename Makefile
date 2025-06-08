@@ -18,5 +18,10 @@ css:
 # 	trap 'kill 0' SIGINT; \
 # 	npx @tailwindcss/cli -i ./views/css/app.css -o ./cmd/app/public/assets/app.css --watch & \
 # 	air & \
-# 	templ generate --watch --proxy="http://localhost:3000" & \
 # 	wait
+
+
+
+
+# 	templ generate --watch --proxy="http://localhost:3000" & \
+#   css make 
