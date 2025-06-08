@@ -1,0 +1,104 @@
+package docs
+
+import "templ_workout/views/layouts"
+
+templ Docs() {
+	@layouts.App() {
+		<div class="container mx-auto px-4 py-8 max-w-4xl">
+			<h1 class="text-4xl font-bold mb-8">Welcome to the Documentation</h1>
+			<section class="mb-12">
+				<h2 class="text-2xl font-semibold mb-4">Getting Started</h2>
+				<p class="mb-4">This application is built using Go, Templ, and Air for a modern, efficient development experience. Let's get you set up!</p>
+			</section>
+			<section class="mb-12">
+				<h2 class="text-2xl font-semibold mb-4">Prerequisites</h2>
+				<div class="bg-gray-100 p-4 rounded-lg">
+					<p class="mb-2">1. Install Go (version 1.21 or later)</p>
+					<p class="mb-2">2. Install Templ CLI</p>
+					<p class="mb-2">3. Install Air for hot reloading</p>
+				</div>
+			</section>
+			<section class="mb-12">
+				<h2 class="text-2xl font-semibold mb-4">Installation Steps</h2>
+				<div class="space-y-4">
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">1. Install Go Modules</h3>
+						<pre class="bg-gray-100 p-2 rounded">
+							<code>
+								go mod init your-project-name
+								go get github.com/a-h/templ
+								go get github.com/cosmtrek/air
+							</code>
+						</pre>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">2. Install Templ CLI</h3>
+						<pre class="bg-gray-100 p-2 rounded"><code>go install github.com/a-h/templ/cmd/templ@latest</code></pre>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">3. Install Air</h3>
+						<pre class="bg-gray-100 p-2 rounded"><code>go install github.com/cosmtrek/air@latest</code></pre>
+					</div>
+				</div>
+			</section>
+			<section class="mb-12">
+				<h2 class="text-2xl font-semibold mb-4">Development Workflow</h2>
+				<div class="space-y-4">
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Using Templ with Watch Mode</h3>
+						<p class="mb-2">To automatically compile your Templ templates when they change:</p>
+						<pre class="bg-gray-100 p-2 rounded"><code>templ generate --watch</code></pre>
+						<p class="mt-2">This will watch your .templ files and automatically regenerate the Go code when changes are detected.</p>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Using Air for Hot Reloading</h3>
+						<p class="mb-2">To run your application with hot reloading:</p>
+						<pre class="bg-gray-100 p-2 rounded"><code>air</code></pre>
+						<p class="mt-2">Air will watch your Go files and automatically rebuild and restart your application when changes are detected.</p>
+					</div>
+				</div>
+			</section>
+			<section class="mb-12">
+				<h2 class="text-2xl font-semibold mb-4">Benefits of This Stack</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Go</h3>
+						<ul class="list-disc list-inside">
+							<li>High performance and efficiency</li>
+							<li>Strong type system</li>
+							<li>Excellent concurrency support</li>
+							<li>Built-in testing support</li>
+						</ul>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Templ</h3>
+						<ul class="list-disc list-inside">
+							<li>Type-safe templating</li>
+							<li>Compile-time template checking</li>
+							<li>Excellent IDE support</li>
+							<li>High performance rendering</li>
+						</ul>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Air</h3>
+						<ul class="list-disc list-inside">
+							<li>Lightning-fast hot reloading</li>
+							<li>Configurable build process</li>
+							<li>Minimal resource usage</li>
+							<li>Cross-platform support</li>
+						</ul>
+					</div>
+					<div class="bg-white p-4 rounded-lg shadow">
+						<h3 class="text-xl font-medium mb-2">Overall Benefits</h3>
+						<ul class="list-disc list-inside">
+							<li>Rapid development cycle</li>
+							<li>Type safety throughout the stack</li>
+							<li>Excellent developer experience</li>
+							<li>Production-ready performance</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

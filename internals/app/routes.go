@@ -16,14 +16,16 @@ func (a *App) loadRoutes() {
 
 	router.Use(middleware.Logger)
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
+		http.Redirect(w, r, "/docs", http.StatusPermanentRedirect)
 	})
 
 	// router.Route("/orders", a.loadOrderRoutes)
 	fooHandler := &handlers.Foo{}
+	docHandler := &handlers.Doc{}
 	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
 
 	router.Get("/sex", handlers.Make(fooHandler.HandleMoo))
+	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
 
 	path, _ := os.Getwd()
 	fmt.Println(path)
