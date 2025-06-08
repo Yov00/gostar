@@ -13,19 +13,16 @@ type Config struct {
 }
 
 func LoadConfig() Config {
-	cfg := Config{
-		ConnectionString: "localhost:6379",
-		ServerPort:       3000,
-	}
-
 	basePath, err := os.Getwd()
 	if err != nil {
 		log.Fatal("failed to get working dir %w", err)
 	}
 
 	dbPath := filepath.Join(basePath, "db", "app.db")
-
-	cfg.ConnectionString = dbPath
+	cfg := Config{
+		ConnectionString: dbPath,
+		ServerPort:       3000,
+	}
 
 	if serverPort, exists := os.LookupEnv(("SERVER_PORT")); exists {
 		if port, err := strconv.ParseUint(serverPort, 10, 16); err == nil {
