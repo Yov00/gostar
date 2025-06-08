@@ -17,6 +17,7 @@ func main() {
 	defer cancel()
 
 	err := app.Start(ctx)
+
 	if err != nil {
 		fmt.Println("failed start app:", err)
 	}

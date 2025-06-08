@@ -8,9 +8,12 @@ package foo
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "templ_workout/views/layouts"
+import (
+	"templ_workout/internals/models"
+	"templ_workout/views/layouts"
+)
 
-func Moo() templ.Component {
+func Moo(users []models.UserDTO) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

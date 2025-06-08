@@ -13,7 +13,7 @@ import (
 
 type App struct {
 	router http.Handler
-	db     *sql.DB
+	DB     *sql.DB
 	config config.Config
 }
 
@@ -29,7 +29,7 @@ func NewApp(config config.Config) *App {
 	if err != nil {
 		log.Fatal("Failed to initialise db: %w", err)
 	}
-	app.db = db
+	app.DB = db
 
 	app.loadRoutes()
 
@@ -44,7 +44,7 @@ func (a *App) Start(ctx context.Context) error {
 		Handler: a.router,
 	}
 
-	err := a.db.Ping()
+	err := a.DB.Ping()
 	if err != nil {
 		return fmt.Errorf("failed to connect to redis: %w", err)
 	}

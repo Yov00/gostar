@@ -20,7 +20,10 @@ func (a *App) loadRoutes() {
 	})
 
 	// router.Route("/orders", a.loadOrderRoutes)
-	fooHandler := &handlers.Foo{}
+	fooHandler := &handlers.Foo{
+		DB: a.DB,
+	}
+
 	docHandler := &handlers.Doc{}
 	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
 
