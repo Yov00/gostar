@@ -18,7 +18,7 @@ func LoadConfig() Config {
 		log.Fatal("failed to get working dir %w", err)
 	}
 
-	dbPath := filepath.Join(basePath, "db", "app.db")
+	dbPath := filepath.Join(basePath, "db", "app.db?_journal_mode=WAL&_synchronous=NORMAL&_cache_size=-64000&_busy_timeout=5000")
 	cfg := Config{
 		ConnectionString: dbPath,
 		ServerPort:       3000,

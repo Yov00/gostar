@@ -46,7 +46,17 @@ func Moo(users []models.UserDTO) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<details><summary><h6>Whats up?</h6></summary><p>Not much?</p></details>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<details><summary><h6>Whats up?</h6></summary><p>Not much?</p></details> <button class=\"bg-blue-500 text-white text-4xl rounded-full p-4 hover:cursor-pointer\" onclick=\"addUser()\">Add user</button><ul id=\"user-ul\" class=\"border border-e-red-400 flex flex-col gap-4\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			for _, item := range users {
+				templ_7745c5c3_Err = UserContainer(item).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</ul><script>\n      async function addUser(){\n        try{\n          const res = await fetch(\"/addUser\",{\nmethod: \"POST\",\nbody: JSON.stringify({ name: \"example\",email:\"example@test.com\" }),\n})\n  const data = await res.text()\n  const userUl = document.querySelector(\"#user-ul\")\n  if(userUl){\n      userUl.insertAdjacentHTML(\"beforeend\",data)\n    }\n\nconsole.log(data)\n  }catch(err){\n    console.error(err)\n  }\n}\n\n</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

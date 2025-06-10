@@ -13,5 +13,31 @@ templ Moo(users []models.UserDTO) {
 			</summary>
 			<p>Not much?</p>
 		</details>
+		<button class="bg-blue-500 text-white text-4xl rounded-full p-4 hover:cursor-pointer" onclick="addUser()">Add user</button>
+		<ul id="user-ul" class="border border-e-red-400 flex flex-col gap-4">
+			for _, item := range users {
+				@UserContainer(item)
+			}
+		</ul>
+		<script>
+      async function addUser(){
+        try{
+          const res = await fetch("/addUser",{
+method: "POST",
+body: JSON.stringify({ name: "example",email:"example@test.com" }),
+})
+  const data = await res.text()
+  const userUl = document.querySelector("#user-ul")
+  if(userUl){
+      userUl.insertAdjacentHTML("beforeend",data)
+    }
+
+console.log(data)
+  }catch(err){
+    console.error(err)
+  }
+}
+
+</script>
 	}
 }

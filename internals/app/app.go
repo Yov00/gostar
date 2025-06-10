@@ -29,6 +29,10 @@ func NewApp(config config.Config) *App {
 	if err != nil {
 		log.Fatal("Failed to initialise db: %w", err)
 	}
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
+
 	app.DB = db
 
 	app.loadRoutes()

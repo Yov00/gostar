@@ -1,0 +1,17 @@
+
+package foo
+
+import "templ_workout/internals/models"
+
+templ UserContainer(user models.UserDTO) {
+	<li>
+		<div class="flex gap-2">
+			<div class="text-xl max-w-fit bg-amber-600 text-white">
+				{ user.Name }
+			</div>
+			<div class="text-xl bg-amber-600 max-w-fit text-white">
+				{ user.Email }
+			</div>
+		</div>
+	</li>
+}

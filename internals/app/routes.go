@@ -29,6 +29,7 @@ func (a *App) loadRoutes() {
 
 	router.Get("/sex", handlers.Make(fooHandler.HandleMoo))
 	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
+	router.Post("/addUser", fooHandler.HandleAddUser)
 
 	path, _ := os.Getwd()
 	fmt.Println(path)
