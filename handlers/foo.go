@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"templ_workout/internals/models"
 	"templ_workout/views/foo"
+
+	"github.com/go-chi/chi"
 )
 
 type Foo struct {
@@ -52,7 +54,18 @@ func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-
 	Render(w, r, foo.UserContainer(user))
+}
 
+func (f *Foo) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
+	email := chi.URLParam(r, "email")
+	fmt.Println(email)
+	if email != "" {
+		res, err := f.DB.Exec("DELETE FROM users WHERE email=?", email)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(res)
+	}
+	w.WriteHeader(http.StatusOK)
 }
