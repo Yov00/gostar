@@ -9,13 +9,13 @@ import (
 
 type Config struct {
 	ConnectionString string
-	ServerPort       uint64
+	ServerPort       uint16
 }
 
 func LoadConfig() Config {
 	basePath, err := os.Getwd()
 	if err != nil {
-		log.Fatal("failed to get working dir %w", err)
+		log.Fatalf("failed to get working dir %v", err)
 	}
 
 	dbPath := filepath.Join(basePath, "db", "app.db?_journal_mode=WAL&_synchronous=NORMAL&_cache_size=-64000&_busy_timeout=5000")
@@ -26,7 +26,7 @@ func LoadConfig() Config {
 
 	if serverPort, exists := os.LookupEnv(("SERVER_PORT")); exists {
 		if port, err := strconv.ParseUint(serverPort, 10, 16); err == nil {
-			cfg.ServerPort = uint64(port)
+			cfg.ServerPort = uint16(port)
 		}
 	}
 

@@ -15,22 +15,19 @@ func (a *App) loadRoutes() {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/docs", http.StatusPermanentRedirect)
-	})
 
-	// router.Route("/orders", a.loadOrderRoutes)
 	fooHandler := &handlers.Foo{
 		DB: a.DB,
 	}
+	authHandler := &handlers.AuthHandler{}
 
 	docHandler := &handlers.Doc{}
 	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
-
-	router.Get("/sex", handlers.Make(fooHandler.HandleMoo))
+	router.Get("/", handlers.Make(fooHandler.HandleMoo))
 	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
 	router.Post("/addUser", fooHandler.HandleAddUser)
 	router.Delete("/delete/{email}", fooHandler.HandleDeleteUser)
+	router.Get("/login", handlers.Make(authHandler.Login))
 
 	path, _ := os.Getwd()
 	fmt.Println(path)

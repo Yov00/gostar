@@ -1,20 +1,21 @@
 package layouts
 
 templ App() {
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>GO Started </title>
-	<link rel="stylesheet" type="text/css" href="/assets/app.css" />
-	<script src="/assets/js/main.js" defer></script>
-</head>
-
-<body>
-	{ children... }
-</body>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="en" data-theme="forest">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>GO Started </title>
+			<link rel="stylesheet" type="text/css" href="/assets/app.css"/>
+			<link rel="stylesheet" type="text/css" href="/assets/custom-styles.css"/>
+			<script src="/assets/js/main.js" defer></script>
+		</head>
+		<body>
+			@Nav()
+			<main>
+				{ children... }
+			</main>
+		</body>
+	</html>
 }

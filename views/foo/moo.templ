@@ -1,35 +1,20 @@
 package foo
 
 import (
-"templ_workout/internals/models"
-"templ_workout/views/layouts"
+	"templ_workout/internals/models"
+	"templ_workout/views/layouts"
 )
 
 templ Moo(users []models.UserDTO) {
-@layouts.App() {
-<button class="btn h-auto btn-accent text-6xl" onclick="addUser()">Add
-	user</button>
-<div id="user-list">
-	for _, item := range users {
-	@UserContainer(item)
-	}
-</div>
-<script>
-	async function addUser() {
-		try {
-			const res = await fetch("/addUser", {
-				method: "POST",
-				body: JSON.stringify({ name: "example", email: "example@test.com" }),
-			})
-			const data = await res.text()
-			const userUl = document.querySelector("#user-list")
-			if (userUl) {
-				userUl.insertAdjacentHTML("beforeend", data)
+	@layouts.App() {
+		@Hero()
+		<button class="btn btn-primary btn-xl" onclick="addUser()">
+			Add User
+		</button>
+		<div id="user-list">
+			for _, item := range users {
+				@UserContainer(item)
 			}
-		} catch (err) {
-			console.error(err)
-		}
+		</div>
 	}
-</script>
-}
 }
