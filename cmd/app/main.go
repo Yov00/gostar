@@ -18,7 +18,6 @@ func main() {
 
 	err := app.Start(ctx)
 
-	//TODO: add auth
 	if err != nil {
 		fmt.Println("failed start app:", err)
 	}

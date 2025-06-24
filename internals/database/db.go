@@ -22,5 +22,7 @@ func (db *DB) NewSqliteDB(filePath string) (*sql.DB, error) {
 		return nil, err
 	}
 
+	Migrate(database)
+
 	return database, nil
 }
