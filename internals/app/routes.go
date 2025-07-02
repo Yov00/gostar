@@ -24,14 +24,17 @@ func (a *App) loadRoutes() {
 		DB: a.DB,
 	}
 	authHandler := &handlers.AuthHandler{}
-
 	docHandler := &handlers.Doc{}
+	errorPagesHandler := &handlers.ErrorPagesHandler{}
+
 	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
 	router.Get("/", handlers.Make(fooHandler.HandleMoo))
 	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
 	router.Post("/addUser", fooHandler.HandleAddUser)
 	router.Delete("/delete/{email}", fooHandler.HandleDeleteUser)
 	router.Get("/login", handlers.Make(authHandler.Login))
+
+	router.Get("/*", handlers.Make(errorPagesHandler.NotFound))
 
 	a.loadAuthRoutes(router)
 
