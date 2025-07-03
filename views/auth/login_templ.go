@@ -43,7 +43,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]\"><div class=\"card-body\"><h2 class=\"text-3xl font-bold\">Login</h2><fieldset class=\"fieldset\"><label class=\"label\">Email</label> <input type=\"email\" class=\"input\" placeholder=\"Email\"> <label class=\"label\">Password</label> <input type=\"password\" class=\"input\" placeholder=\"Password\"><div><a class=\"link link-hover\">Forgot password?</a></div><div class=\"flex gap-5 mt-4\"><button class=\"btn btn-accent flex-1\">Login</button> <button class=\"btn btn-outline btn-accent flex-1\">Register</button></div></fieldset></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]\"><div class=\"card-body\"><h2 class=\"text-3xl font-bold\">Login</h2><fieldset class=\"fieldset\"><label class=\"label\">Email</label> <input type=\"email\" class=\"input\" placeholder=\"Email\"> <label class=\"label\">Password</label> <input type=\"password\" class=\"input\" placeholder=\"Password\"><div><a class=\"link link-hover\">Forgot password?</a></div><div class=\"flex gap-5 mt-4\"><button class=\"btn btn-accent flex-1\">Login</button> <a href=\"/register\" class=\"btn btn-outline btn-accent flex-1\">Register</a></div></fieldset></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -23,7 +23,9 @@ func (a *App) loadRoutes() {
 	fooHandler := &handlers.Foo{
 		DB: a.DB,
 	}
-	authHandler := &handlers.AuthHandler{}
+	authHandler := &handlers.AuthHandler{
+		DB: a.DB,
+	}
 	docHandler := &handlers.Doc{}
 	errorPagesHandler := &handlers.ErrorPagesHandler{}
 
@@ -33,10 +35,11 @@ func (a *App) loadRoutes() {
 	router.Post("/addUser", fooHandler.HandleAddUser)
 	router.Delete("/delete/{email}", fooHandler.HandleDeleteUser)
 	router.Get("/login", handlers.Make(authHandler.Login))
+	router.Get("/register", handlers.Make(authHandler.Register))
 
 	router.Get("/*", handlers.Make(errorPagesHandler.NotFound))
 
-	a.loadAuthRoutes(router)
+	a.loadAuthRoutes(router, authHandler)
 
 	path, _ := os.Getwd()
 	fmt.Println(path)
@@ -50,37 +53,9 @@ func (a *App) loadRoutes() {
 	a.router = router
 }
 
-func (a *App) loadAuthRoutes(router chi.Router) {
-	// orderHandler := &handler.Order{
-	// 	Repo: &order.RedisRepo{
-	// 		Client: a.rdb,
-	// 	},
-	// }
+func (a *App) loadAuthRoutes(router chi.Router, handler *handlers.AuthHandler) {
 
-	router.Post("/register", func(w http.ResponseWriter, r *http.Request) {
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		if len(username) < 8 || len(password) < 8 {
-			err := http.StatusNotAcceptable
-			http.Error(w, "Invalid username/password", err)
-			return
-		}
-
-		if _, ok := users[username]; ok {
-			err := http.StatusConflict
-			http.Error(w, "User already exists", err)
-			return
-		}
-
-		hashedPassword, _ := auth.HashPassword(password)
-		users[username] = auth.Login{
-			HashedPassword: hashedPassword,
-		}
-
-		fmt.Fprintf(w, "User registered successfully!")
-
-	})
+	router.Post("/register", handlers.Make(handler.HandleAddUser))
 
 	router.Post("/login", func(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")

@@ -5,13 +5,13 @@ import (
 	"templ_workout/views/layouts"
 )
 
-templ Moo(users []models.UserDTO) {
+templ Moo(users []models.User) {
 	@layouts.App() {
 		@Hero()
-		<button class="btn btn-primary btn-xl" onclick="addUser()">
-			Add User
-		</button>
-		<div id="user-list">
+		<!-- <button class="btn btn-primary btn-xl" onclick="addUser()"> -->
+		<!-- 	Add User -->
+		<!-- </button> -->
+		<div id="user-list" class="container mx-auto">
 			for _, item := range users {
 				@UserContainer(item)
 			}

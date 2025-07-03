@@ -9,8 +9,10 @@ import (
 	"net/http"
 	"templ_workout/internals/models"
 	"templ_workout/views/foo"
+	"time"
 
 	"github.com/go-chi/chi"
+	"github.com/google/uuid"
 )
 
 type Foo struct {
@@ -27,9 +29,9 @@ func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
 		log.Fatal("failed to query users")
 	}
 	defer rows.Close()
-	var users []models.UserDTO
+	var users []models.User
 	for rows.Next() {
-		var user models.UserDTO
+		var user models.User
 		rows.Scan(&user.Name, &user.Email)
 
 		users = append(users, user)
@@ -39,9 +41,8 @@ func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("it hits hard")
 	decoder := json.NewDecoder(r.Body)
-	var user models.UserDTO
+	var user models.User
 	err := decoder.Decode(&user)
 	if err != nil {
 		fmt.Println(err)
@@ -50,7 +51,7 @@ func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(user)
 
 	user.Email = fmt.Sprintf("%d%s", rand.Int(), user.Email)
-	_, err = f.DB.Exec("INSERT INTO users(name,email) values($name,$email)", user.Name, user.Email)
+	_, err = f.DB.Exec("INSERT INTO users(id,name,email, password,createdOn,updatedOn) values($id,$name,$email,$password,$createdOn,$updatedOn)", uuid.New(), user.Name, user.Email, "randomstr", time.Now(), time.Now())
 	if err != nil {
 		fmt.Println(err)
 	}

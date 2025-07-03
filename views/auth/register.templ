@@ -1,0 +1,29 @@
+
+package auth
+
+import "templ_workout/views/layouts"
+
+templ Register() {
+	@layouts.App() {
+		<script src="/assets/js/auth.js" defer></script>
+		<div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]">
+			<form method="POST" action="/register" onsubmit="register_submit(event)" class="card-body">
+				<h2 class="text-3xl font-bold">Register</h2>
+				<fieldset class="fieldset">
+					<label class="label">Email</label>
+					<input type="email" name="email" id="email" class="input" placeholder="Email" required/>
+					<label class="label">Name</label>
+					<input type="text" id="name" name="name" class="input" placeholder="Name" required/>
+					<label class="label">Password</label>
+					<input type="password" id="password" name="password" class="input" placeholder="Password" required/>
+					<label class="label">Confirm Password</label>
+					<input type="password" id="confirmPassword" name="confirmPassword" class="input" placeholder="Confirm Password" required/>
+					<div class="flex gap-5 mt-4">
+						<!-- <button class="btn btn-accent flex-1">Cancel</button> -->
+						<button type="submit" class="btn btn-outline btn-accent flex-1">Register</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	}
+}

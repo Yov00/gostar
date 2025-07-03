@@ -29,7 +29,7 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"navbar bg-base-100 shadow-sm sticky top-0  backdrop-blur bg-base-100/70\"><div class=\"flex-1\"><a href=\"/\" class=\"btn btn-ghost text-xl\">daisyUI</a></div><div class=\"flex-none\"><ul class=\"menu menu-horizontal px-1\"><li><a href=\"/login\">Login</a></li><li><details><summary>Docs</summary><ul class=\"bg-base-100 rounded-t-none p-2\"><li><a href=\"/docs\">Usage</a></li><li><a>TBD</a></li></ul></details></li></ul></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"navbar bg-base-100 shadow-sm sticky top-0  backdrop-blur bg-base-100/70\"><div class=\"flex-1\"><a href=\"/\" class=\"btn btn-ghost text-xl\">daisyUI</a></div><div class=\"flex-none\"><ul class=\"menu menu-horizontal px-1\"><li><a href=\"/login\">Login</a></li><li><a href=\"/register\">Register</a></li><li><details><summary>Docs</summary><ul class=\"bg-base-100 rounded-t-none p-2\"><li><a href=\"/docs\">Usage</a></li><li><a>TBD</a></li></ul></details></li></ul></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
