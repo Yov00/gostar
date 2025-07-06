@@ -48,8 +48,6 @@ func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	fmt.Println(user)
-
 	user.Email = fmt.Sprintf("%d%s", rand.Int(), user.Email)
 	_, err = f.DB.Exec("INSERT INTO users(id,name,email, password,createdOn,updatedOn) values($id,$name,$email,$password,$createdOn,$updatedOn)", uuid.New(), user.Name, user.Email, "randomstr", time.Now(), time.Now())
 	if err != nil {
