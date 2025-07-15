@@ -7,6 +7,7 @@ import (
 	"os"
 	"templ_workout/handlers"
 	"templ_workout/internals/auth"
+	"templ_workout/internals/repositories"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -57,43 +58,7 @@ func (a *App) loadAuthRoutes(router chi.Router, handler *handlers.AuthHandler) {
 
 	router.Post("/register", handlers.Make(handler.HandleAddUser))
 
-	router.Post("/login", func(w http.ResponseWriter, r *http.Request) {
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		user, ok := users[username]
-		if !ok || !auth.CheckPasswordHash(password, user.HashedPassword) {
-			err := http.StatusUnauthorized
-			http.Error(w, "invalid username/password", err)
-			return
-		}
-
-		sessionToken := auth.GenerateToken(32)
-		csrfToken := auth.GenerateToken(32)
-
-		http.SetCookie(w, &http.Cookie{
-			Name:     "session_token",
-			Value:    sessionToken,
-			Expires:  time.Now().Add(24 * time.Hour),
-			HttpOnly: true, //Da ne se pipa ot JS
-			SameSite: http.SameSiteStrictMode,
-		})
-
-		http.SetCookie(w, &http.Cookie{
-			Name:     "csrf_token",
-			Value:    csrfToken,
-			Expires:  time.Now().Add(24 * time.Hour),
-			HttpOnly: false, // Da se vzeme ot  js i da se prashta na vseki request
-			SameSite: http.SameSiteStrictMode,
-		})
-
-		user.SessionToken = sessionToken
-		user.CSRFToken = csrfToken
-		users[username] = user
-
-		fmt.Fprintf(w, "Login successfully!")
-
-	})
+	router.Post("/login", handlers.Make(handler.LoginPost))
 
 	router.Route("/logout", func(r chi.Router) {
 		r.Use(Authorize)
@@ -123,7 +88,7 @@ func (a *App) loadAuthRoutes(router chi.Router, handler *handlers.AuthHandler) {
 	})
 
 	router.Route("/protected", func(r chi.Router) {
-		r.Use(Authorize)
+		r.Use(a.Authorize)
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			usrname := r.FormValue("username")
 			fmt.Fprintf(w, "Здравей %s, Bravo!", usrname)
@@ -133,33 +98,44 @@ func (a *App) loadAuthRoutes(router chi.Router, handler *handlers.AuthHandler) {
 
 }
 
-// update and MOVE TO middleware...
-func Authorize(next http.Handler) http.Handler {
+func (a *App) Authorize(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		username := r.FormValue("username")
-		user, ok := users[username]
-		if !ok {
-			http.Error(w, "Unauthorized - invalid user", http.StatusUnauthorized)
+		st, err := r.Cookie("session_token")
+		if err != nil || st.Value == "" {
+			http.Error(w, "Unauthorized - invalid session", http.StatusUnauthorized)
+			return
+		}
+		ct, err := r.Cookie("csrf_token")
+		if err != nil || ct.Value == "" {
+			http.Error(w, "Unauthorized - invalid csrf token", http.StatusUnauthorized)
+			return
+		}
+		if r.Method != http.MethodGet {
+			headerCT := r.Header.Get("X-CSRF-TOKEN")
+			if headerCT == "" || headerCT != ct.Value {
+				http.Error(w, "Unauthorized - invalid csrf token", http.StatusUnauthorized)
+				return
+			}
+		}
+
+		userRepo := repositories.UserRepo{DB: a.DB}
+		userId, err := userRepo.GetUserIdByCSRFAndSessionToken(st.Value, ct.Value)
+		if err != nil || userId == nil {
+			http.Error(w, "Unauthorized - Invalid session", http.StatusUnauthorized)
 			return
 		}
 
-		st, err := r.Cookie("session_token")
-		if err != nil || st.Value == "" || st.Value != user.SessionToken {
-			http.Error(w, "Unauthorized - invalid session", http.StatusUnauthorized)
+		user, err := userRepo.SelectById(*userId)
+		if err != nil || user == nil {
+			http.Error(w, "Unauthorized - Invalid session", http.StatusUnauthorized)
 			return
 		}
 
 		csrf := r.Header.Get("X-CSRF-TOKEN")
 		fmt.Println("----")
 		fmt.Println(csrf)
-		fmt.Println(user.CSRFToken)
 		fmt.Println("----")
-
-		if csrf != user.CSRFToken || csrf == "" {
-			http.Error(w, "Unauthorized - invalid CSRF token", http.StatusUnauthorized)
-			return
-		}
 
 		next.ServeHTTP(w, r)
 	})

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"templ_workout/internals/auth"
 	intAuth "templ_workout/internals/auth"
 	"templ_workout/internals/models"
 	"templ_workout/internals/repositories"
@@ -48,6 +49,11 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
+	fmt.Println("----------")
+	fmt.Println(user.Email == "")
+	fmt.Println("----------")
+	fmt.Println(email)
+	fmt.Println("----------")
 	if user.Email != "" {
 		err := http.StatusConflict
 		http.Error(w, "User already exists", err)
@@ -74,4 +80,74 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 	http.Redirect(w, r, "/login", http.StatusOK)
 	return nil
 
+}
+
+func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
+	var err error
+
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+
+	if email == "" {
+		status := http.StatusUnauthorized
+		http.Error(w, "invalid email/password", status)
+
+		return err
+	}
+
+	userRepo := repositories.UserRepo{DB: a.DB}
+	user, err := userRepo.SelectByEmail(email)
+
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return err
+	}
+	if user == nil {
+		http.Error(w, "invalid email/password", http.StatusUnauthorized)
+		return err
+	}
+
+	if !intAuth.CheckPasswordHash(password, user.Password) {
+		status := http.StatusUnauthorized
+		http.Error(w, "invalid username/password", status)
+		return err
+	}
+
+	sessionToken := intAuth.GenerateToken(32)
+	csrfToken := intAuth.GenerateToken(32)
+
+	expiratonTime := time.Now().Add(24 * time.Hour)
+	userAgent := r.Header.Get("User-Agent")
+	requestIPaddr := auth.GetClientIP(r)
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_token",
+		Value:    sessionToken,
+		Expires:  expiratonTime,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "csrf_token",
+		Value:    csrfToken,
+		Expires:  expiratonTime,
+		HttpOnly: false,
+		SameSite: http.SameSiteStrictMode,
+	})
+
+	session := models.Session{
+		UserID:       user.Id,
+		SessionToken: sessionToken,
+		CSRFToken:    csrfToken,
+		UserAgent:    &userAgent,
+		IPAddress:    &requestIPaddr,
+		ExpiresAt:    &expiratonTime,
+		CreatedAt:    time.Now(),
+	}
+
+	fmt.Println(session)
+	fmt.Fprintf(w, "Login successfully!")
+
+	return err
 }
