@@ -19,6 +19,11 @@ type AuthHandler struct {
 }
 
 func (a *AuthHandler) Login(w http.ResponseWriter, r *http.Request) error {
+	user := auth.GetUserFromContext(r)
+
+	if user != nil {
+		http.Redirect(w, r, "/protected", http.StatusSeeOther)
+	}
 	return Render(w, r, vAuth.Login())
 }
 
@@ -29,10 +34,7 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 	email := r.FormValue("email")
 	name := r.FormValue("name")
 	password := r.FormValue("password")
-	confirmPassword := r.FormValue("confirmPassword")
-
-	fmt.Println(email)
-	fmt.Println(confirmPassword)
+	// confirmPassword := r.FormValue("confirmPassword")
 
 	if len(name) < 3 || len(password) < 6 {
 		err := http.StatusNotAcceptable
@@ -49,11 +51,6 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	fmt.Println("----------")
-	fmt.Println(user.Email == "")
-	fmt.Println("----------")
-	fmt.Println(email)
-	fmt.Println("----------")
 	if user.Email != "" {
 		err := http.StatusConflict
 		http.Error(w, "User already exists", err)
@@ -146,7 +143,11 @@ func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
 		CreatedAt:    time.Now(),
 	}
 
-	fmt.Println(session)
+	sessionRepo := repositories.SessionRepo{DB: a.DB}
+	err = sessionRepo.Insert(session)
+	if err != nil {
+		fmt.Println("Failed to insert sesson: %w", err)
+	}
 	fmt.Fprintf(w, "Login successfully!")
 
 	return err

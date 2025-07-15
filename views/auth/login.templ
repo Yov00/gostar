@@ -4,22 +4,27 @@ import "templ_workout/views/layouts"
 
 templ Login() {
 	@layouts.App() {
-		<div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]">
-			<div class="card-body">
-				<h2 class="text-3xl font-bold">Login</h2>
-				<form method="POST" action="/login">
-					<fieldset class="fieldset">
-						<label class="label">Email</label>
-						<input type="email" name="email" class="input" placeholder="Email"/>
-						<label class="label">Password</label>
-						<input type="password" name="password" class="input" placeholder="Password"/>
-						<div><a class="link link-hover">Forgot password?</a></div>
-						<div class="flex gap-5 mt-4">
-							<button class="btn btn-accent flex-1" type="submit">Login</button>
-							<a href="/register" class="btn btn-outline btn-accent flex-1">Register</a>
-						</div>
-					</fieldset>
-				</form>
+		<div class="hero min-h-screen" style="background-image: url(/assets/images/213.jpg);">
+			<div class="hero-overlay"></div>
+			<div class="hero-content text-neutral-content text-center w-full">
+				<div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]">
+					<div class="card-body">
+						<h2 class="text-3xl font-bold">Login</h2>
+						<form method="POST" action="/login">
+							<fieldset class="fieldset">
+								<label class="label">Email</label>
+								<input type="email" name="email" class="input" placeholder="Email"/>
+								<label class="label">Password</label>
+								<input type="password" name="password" class="input" placeholder="Password"/>
+								<div><a class="link link-hover">Forgot password?</a></div>
+								<div class="flex gap-5 mt-4">
+									<button class="btn btn-accent flex-1" type="submit">Login</button>
+									<a href="/register" class="btn btn-outline btn-accent flex-1">Register</a>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	}

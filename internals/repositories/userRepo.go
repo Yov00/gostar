@@ -6,6 +6,8 @@ import (
 	"strings"
 	"templ_workout/internals/models"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UserRepo struct {
@@ -45,12 +47,12 @@ func (u *UserRepo) SelectByEmail(email string) (*models.User, error) {
 	return &user, nil
 }
 
-func (u *UserRepo) SelectById(userId string) (*models.User, error) {
+func (u *UserRepo) SelectById(userId uuid.UUID) (*models.User, error) {
 	var err error
 	var user models.User
 	var createdOnStr, updatedOnStr string
 
-	row := u.DB.QueryRow("SELECT id, email, name, createdOn, updatedOn, password  from users WHERE id = ?", strings.TrimSpace(userId))
+	row := u.DB.QueryRow("SELECT id, email, name, createdOn, updatedOn, password  from users WHERE id = ?", userId)
 	err = row.Scan(&user.Id, &user.Email, &user.Name, &createdOnStr, &updatedOnStr, &user.Password)
 
 	layout := "2006-01-02 15:04:05.999999999-07:00"
@@ -76,7 +78,7 @@ func (u *UserRepo) GetUserIdByCSRFAndSessionToken(session_token string, csrf str
 	var err error
 	var userId string
 
-	row := u.DB.QueryRow("SELECT user_id from sessoins where session_token = ? and csrf_token = ?", strings.TrimSpace(session_token), strings.TrimSpace(csrf))
+	row := u.DB.QueryRow("SELECT user_id from sessions where session_token = ? and csrf_token = ?", strings.TrimSpace(session_token), strings.TrimSpace(csrf))
 
 	err = row.Scan(userId)
 	if err != nil {

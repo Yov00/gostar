@@ -1,0 +1,13 @@
+package auth
+
+import "templ_workout/views/layouts"
+
+templ ProtectedPage(userName string) {
+	@layouts.App() {
+		<div class="container mx-auto">
+			<h1>
+				Здравей { userName }, Bravo!
+			</h1>
+		</div>
+	}
+}

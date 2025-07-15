@@ -7,8 +7,13 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"templ_workout/internals/models"
 
 	"golang.org/x/crypto/bcrypt"
+)
+
+var (
+	userContextKey = "user"
 )
 
 func HashPassword(password string) (string, error) {
@@ -45,4 +50,12 @@ func GetClientIP(r *http.Request) string {
 		return r.RemoteAddr // fallback, may include port
 	}
 	return ip
+}
+
+func GetUserFromContext(r *http.Request) *models.User {
+	user, ok := r.Context().Value(userContextKey).(*models.User)
+	if !ok {
+		return nil
+	}
+	return user
 }

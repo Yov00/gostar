@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "templ_workout/views/layouts"
 
-func Login() templ.Component {
+func ProtectedPage(userName string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -43,7 +43,20 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"hero min-h-screen\" style=\"background-image: url(/assets/images/213.jpg);\"><div class=\"hero-overlay\"></div><div class=\"hero-content text-neutral-content text-center w-full\"><div class=\"card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mx-auto mt-[20%] translate-y-[-50%]\"><div class=\"card-body\"><h2 class=\"text-3xl font-bold\">Login</h2><form method=\"POST\" action=\"/login\"><fieldset class=\"fieldset\"><label class=\"label\">Email</label> <input type=\"email\" name=\"email\" class=\"input\" placeholder=\"Email\"> <label class=\"label\">Password</label> <input type=\"password\" name=\"password\" class=\"input\" placeholder=\"Password\"><div><a class=\"link link-hover\">Forgot password?</a></div><div class=\"flex gap-5 mt-4\"><button class=\"btn btn-accent flex-1\" type=\"submit\">Login</button> <a href=\"/register\" class=\"btn btn-outline btn-accent flex-1\">Register</a></div></fieldset></form></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto\"><h1>Здравей ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(userName)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/auth/protectedPage.templ`, Line: 9, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, ", Bravo!</h1></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
