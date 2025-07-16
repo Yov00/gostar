@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -47,7 +46,6 @@ func (a *App) loadRoutes() {
 	a.loadAuthRoutes(router, authHandler)
 
 	path, _ := os.Getwd()
-	fmt.Println(path)
 
 	fileServer := http.FileServer(http.Dir(path + "/cmd/app/public"))
 	router.Handle("/assets/*", fileServer)

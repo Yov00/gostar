@@ -50,7 +50,7 @@ func (a *App) Start(ctx context.Context) error {
 
 	err := a.DB.Ping()
 	if err != nil {
-		return fmt.Errorf("failed to connect to redis: %w", err)
+		return fmt.Errorf("failed to connect to database: %w", err)
 	}
 
 	fmt.Println("Starting server on: http://localhost:3000")

@@ -10,6 +10,8 @@ import (
 func (a *App) SetUserContext(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var user *models.User
+		var err error
+
 		st, err := r.Cookie("session_token")
 		if err != nil || st.Value == "" {
 			user = nil
@@ -18,17 +20,21 @@ func (a *App) SetUserContext(next http.Handler) http.Handler {
 		if err != nil || ct.Value == "" {
 			user = nil
 		}
-		sessionRepo := repositories.SessionRepo{DB: a.DB}
-		session, err := sessionRepo.GetSessionByCSRFAndSessionToken(st.Value, ct.Value)
-		if err != nil || session == nil {
-			user = nil
+
+		if st != nil && ct != nil {
+			sessionRepo := repositories.SessionRepo{DB: a.DB}
+			session, err := sessionRepo.GetSessionByCSRFAndSessionToken(st.Value, ct.Value)
+			if err != nil || session == nil {
+				user = nil
+			}
+			userRepo := repositories.UserRepo{DB: a.DB}
+			userId := session.UserID
+			user, err = userRepo.SelectById(userId)
+			if err != nil || user == nil {
+				user = nil
+			}
 		}
-		userRepo := repositories.UserRepo{DB: a.DB}
-		userId := session.UserID
-		user, err = userRepo.SelectById(userId)
-		if err != nil || user == nil {
-			user = nil
-		}
+
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
