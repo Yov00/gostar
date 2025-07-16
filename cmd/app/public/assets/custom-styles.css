@@ -1,3 +1,6 @@
+:root{
+    --go-color:#79d4fd;
+}
 .user-container {
     animation-name: show;
     animation-duration: 300ms;
@@ -37,4 +40,40 @@
         opacity: 0;
 
     }
+}
+
+
+.go-color{
+    color:var(--go-color)!important;
+}
+
+.logo-flare{
+   width: 15px;
+    position:relative;
+    background-color: var(--go-color);
+    height: 2px;
+}
+
+.logo-flare::before{
+    content:"";
+    position:absolute;
+    top:-2px;
+    right:0;
+    transform: translateY(-100%);
+    width: 10px;
+    background-color: var(--go-color);
+    height: 2px;
+}
+
+
+
+.logo-flare::after{
+    content:"";
+    position:absolute;
+    bottom:-2px;
+    right: 0;
+    transform: translateY(100%);
+    width: 5px;
+    background-color: var(--go-color);
+    height: 2px;
 }

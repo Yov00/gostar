@@ -148,7 +148,7 @@ func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		fmt.Println("Failed to insert sesson: %w", err)
 	}
-	fmt.Fprintf(w, "Login successfully!")
+	http.Redirect(w, r, "/protected", http.StatusSeeOther)
 
 	return err
 }
