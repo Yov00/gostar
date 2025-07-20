@@ -19,6 +19,7 @@ func (a *App) loadRoutes() {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
+	router.Use(a.SetUserContext)
 
 	fooHandler := &handlers.Foo{
 		DB: a.DB,
@@ -29,17 +30,10 @@ func (a *App) loadRoutes() {
 	docHandler := &handlers.Doc{}
 	errorPagesHandler := &handlers.ErrorPagesHandler{}
 
-	router.Get("/boo", handlers.Make(fooHandler.HandleFoo))
 	router.Get("/", handlers.Make(fooHandler.HandleMoo))
 	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
 	router.Post("/addUser", fooHandler.HandleAddUser)
 	router.Delete("/delete/{email}", fooHandler.HandleDeleteUser)
-
-	router.Get("/register", handlers.Make(authHandler.Register))
-	router.Route("/login", func(r chi.Router) {
-		r.Use(a.SetUserContext)
-		r.Get("/", handlers.Make(authHandler.Login))
-	})
 
 	router.Get("/*", handlers.Make(errorPagesHandler.NotFound))
 
@@ -58,11 +52,18 @@ func (a *App) loadRoutes() {
 
 func (a *App) loadAuthRoutes(router chi.Router, handler *handlers.AuthHandler) {
 
-	router.Post("/register", handlers.Make(handler.HandleAddUser))
+	router.Route("/register", func(r chi.Router) {
 
-	router.Post("/login", handlers.Make(handler.LoginPost))
+		r.Get("/", handlers.Make(handler.Register))
+		r.Post("/", handlers.Make(handler.HandleAddUser))
 
+	})
+	router.Route("/login", func(r chi.Router) {
+		r.Post("/", handlers.Make(handler.LoginPost))
+		r.Get("/", handlers.Make(handler.Login))
+	})
 	router.Route("/logout", func(r chi.Router) {
+
 		// r.Use(a.Authorize)
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			http.SetCookie(w, &http.Cookie{

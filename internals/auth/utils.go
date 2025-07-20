@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"log"
@@ -58,4 +59,19 @@ func GetUserFromContext(r *http.Request) *models.User {
 		return nil
 	}
 	return user
+}
+
+func GetUserEmailFromContext(ctx context.Context) string {
+	result := ""
+	if user, ok := ctx.Value("user").(*models.User); ok && user != nil {
+		result = user.Name
+	}
+	return result
+}
+
+func IsLoggedIn(ctx context.Context) bool {
+	if user, ok := ctx.Value("user").(*models.User); ok && user != nil {
+		return true
+	}
+	return false
 }

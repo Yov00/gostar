@@ -26,12 +26,12 @@ func (a *App) SetUserContext(next http.Handler) http.Handler {
 			session, err := sessionRepo.GetSessionByCSRFAndSessionToken(st.Value, ct.Value)
 			if err != nil || session == nil {
 				user = nil
-			}
-			userRepo := repositories.UserRepo{DB: a.DB}
-			userId := session.UserID
-			user, err = userRepo.SelectById(userId)
-			if err != nil || user == nil {
-				user = nil
+			} else {
+				userRepo := repositories.UserRepo{DB: a.DB}
+				user, err = userRepo.SelectById(session.UserID)
+				if err != nil || user == nil {
+					user = nil
+				}
 			}
 		}
 

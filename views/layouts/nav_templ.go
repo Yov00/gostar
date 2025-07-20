@@ -8,6 +8,8 @@ package layouts
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "templ_workout/internals/auth"
+
 func Nav() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,7 +31,22 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"navbar bg-base-100 shadow-sm sticky top-0  backdrop-blur bg-base-100/70\"><div class=\"flex-1\"><a href=\"/\" class=\"btn btn-ghost text-3xl font-bold\t go-color\"><div class=\"logo-flare\"></div>GOSTAR</a></div><div class=\"flex-none\"><ul class=\"menu menu-horizontal px-1\"><li><a href=\"/login\">Login</a></li><li><a href=\"/logout\">Logout</a></li><li><a href=\"/register\">Register</a></li><li><a href=\"/protected\">Protected Route</a></li><li><details><summary>Docs</summary><ul class=\"bg-base-100 rounded-t-none p-2\"><li><a href=\"/docs\">Usage</a></li><li><a>TBD</a></li></ul></details></li></ul></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"navbar bg-base-100 shadow-sm sticky top-0  backdrop-blur bg-base-100/70\"><div class=\"flex-1\"><a href=\"/\" class=\"btn btn-ghost text-3xl font-bold\t go-color\"><div class=\"logo-flare\"></div>GOSTAR</a></div><div class=\"flex-none\"><ul class=\"menu menu-horizontal px-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if auth.IsLoggedIn(ctx) {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li><a href=\"/protected\">Protected Route</a></li><li><a href=\"/logout\">Logout</a></li>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<li><a href=\"/login\">Login</a></li><li><a href=\"/register\">Register</a></li>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<li><details><summary>Docs</summary><ul class=\"bg-base-100 rounded-t-none p-2\"><li><a href=\"/docs\">Usage</a></li></ul></details></li></ul></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

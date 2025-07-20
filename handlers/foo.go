@@ -19,10 +19,6 @@ type Foo struct {
 	DB *sql.DB
 }
 
-func (f *Foo) HandleFoo(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, foo.Index())
-}
-
 func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
 	rows, err := f.DB.Query("select name,email from users")
 	if err != nil {

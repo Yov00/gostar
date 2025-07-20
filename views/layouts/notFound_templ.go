@@ -41,7 +41,7 @@ func NotFound() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"min-h-screen h-screen bg-blue-800 flex items-center justify-center\"><!-- <h1 class=\"text-6xl\">Page not found </h2> --></section>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"flex items-center justify-center\" style=\"height: calc(100vh - 65px);\"><div class=\"container mx-auto flex flex-col gap-5 text-center text-red-400 justify-center items-center \"><h1 class=\"text-8xl font-mono leading-20\">404</h1><h1 class=\"text-3xl\"><span class=\"go-color font-mono\">PAGE NOT FOUND</span></h1><a href=\"/\" class=\"btn btn-soft btn-accent w-50\">Back To Home</a></div></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
