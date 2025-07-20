@@ -12,6 +12,7 @@ templ Nav() {
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
+      <li><a href="/">Home</a></li>
       if auth.IsLoggedIn(ctx) {
       <li><a href="/protected">Protected Route</a></li>
       <li><a href="/logout">Logout</a></li>
