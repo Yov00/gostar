@@ -21,19 +21,17 @@ func (a *App) loadRoutes() {
 	router.Use(middleware.Logger)
 	router.Use(a.SetUserContext)
 
-	fooHandler := &handlers.Foo{
-		DB: a.DB,
-	}
+	homeHandler := &handlers.HomeHandler{DB: a.DB}
 	authHandler := &handlers.AuthHandler{
 		DB: a.DB,
 	}
 	docHandler := &handlers.Doc{}
 	errorPagesHandler := &handlers.ErrorPagesHandler{}
 
-	router.Get("/", handlers.Make(fooHandler.HandleMoo))
+	router.Get("/", handlers.Make(homeHandler.Home))
 	router.Get("/docs", handlers.Make(docHandler.HandleDocs))
-	router.Post("/addUser", fooHandler.HandleAddUser)
-	router.Delete("/delete/{email}", fooHandler.HandleDeleteUser)
+	router.Post("/addUser", homeHandler.HandleAddUser)
+	router.Delete("/delete/{email}", homeHandler.HandleDeleteUser)
 
 	router.Get("/*", handlers.Make(errorPagesHandler.NotFound))
 

@@ -8,18 +8,18 @@ import (
 	"math/rand"
 	"net/http"
 	"templ_workout/internals/models"
-	"templ_workout/views/foo"
+	"templ_workout/views/home"
 	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 )
 
-type Foo struct {
+type HomeHandler struct {
 	DB *sql.DB
 }
 
-func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
+func (f *HomeHandler) Home(w http.ResponseWriter, r *http.Request) error {
 	rows, err := f.DB.Query("select name,email from users")
 	if err != nil {
 		log.Fatal("failed to query users")
@@ -33,10 +33,10 @@ func (f *Foo) HandleMoo(w http.ResponseWriter, r *http.Request) error {
 		users = append(users, user)
 	}
 
-	return Render(w, r, foo.Moo(users))
+	return Render(w, r, home.Moo(users))
 }
 
-func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
+func (f *HomeHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var user models.User
 	err := decoder.Decode(&user)
@@ -49,10 +49,10 @@ func (f *Foo) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	Render(w, r, foo.UserContainer(user))
+	Render(w, r, home.UserContainer(user))
 }
 
-func (f *Foo) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
+func (f *HomeHandler) HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
 	email := chi.URLParam(r, "email")
 	fmt.Println(email)
 	if email != "" {

@@ -8,6 +8,7 @@ import (
 func Migrate(db *sql.DB) {
 	addUsersTable(db)
 	addSessionsTable(db)
+	addFilesTable(db)
 }
 
 func addSessionsTable(db *sql.DB) {
@@ -36,7 +37,7 @@ func addSessionsTable(db *sql.DB) {
 
 func addUsersTable(db *sql.DB) {
 
-	sessionsTableSQL := `CREATE TABLE users (
+	sessionsTableSQL := `CREATE TABLE IF NOT EXISTS users (
 	id TEXT PRIMARY KEY, -- UUID stored as TEXT
 	name TEXT NOT NULL,
 	password TEXT NOT NULL,
@@ -50,5 +51,23 @@ func addUsersTable(db *sql.DB) {
 		fmt.Println(err.Error())
 	}
 
-	fmt.Println("Sessions Table created successfully!")
+	fmt.Println("Users Table created successfully!")
+}
+
+func addFilesTable(db *sql.DB) {
+	filesTableSQL := `CREATE TABLE IF NOT EXISTS files (
+	id TEXT PRIMARY KEY,
+	file_name TEXT NOT NULL,
+	original_file_name TEXT NOT NULL,
+	file_path TEXT UNIQUE NOT NULL,
+	created_on TEXT NOT NULL DEFAULT (datetime('now')),
+	updated_on TEXT NOT NULL DEFAULT (datetime('now'))
+	);`
+
+	_, err := db.Exec(filesTableSQL)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	fmt.Println("files Table created successfully!")
 }
