@@ -27,7 +27,5 @@ function register_submit(e) {
     return
   }
 
-
-  alert("send success!")
   e.target.submit()
 }

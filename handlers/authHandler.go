@@ -50,15 +50,14 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 		fmt.Println(err)
 		return err
 	}
-
-	if user.Email != "" {
+	if user != nil {
 		err := http.StatusConflict
 		http.Error(w, "User already exists", err)
 		return nil
 	}
 
 	hashedPassword, _ := intAuth.HashPassword(password)
-	err = userRepo.Insert(models.User{
+	userId, err := userRepo.Insert(models.User{
 		Id:        uuid.New(),
 		Name:      name,
 		Email:     email,
@@ -73,8 +72,10 @@ func (a *AuthHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) erro
 		return nil
 	}
 
-	fmt.Fprintf(w, "User registered successfully!")
-	http.Redirect(w, r, "/login", http.StatusOK)
+	if userId != uuid.Nil {
+		addCookiesAndCreateSession(w, r, userId, a.DB)
+	}
+	http.Redirect(w, r, "/protected", http.StatusSeeOther)
 	return nil
 
 }
@@ -110,6 +111,14 @@ func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	addCookiesAndCreateSession(w, r, user.Id, a.DB)
+	http.Redirect(w, r, "/protected", http.StatusSeeOther)
+
+	return err
+}
+
+func addCookiesAndCreateSession(w http.ResponseWriter, r *http.Request, userId uuid.UUID, db *sql.DB) {
+
 	sessionToken := intAuth.GenerateToken(32)
 	csrfToken := intAuth.GenerateToken(32)
 
@@ -134,7 +143,7 @@ func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
 	})
 
 	session := models.Session{
-		UserID:       user.Id,
+		UserID:       userId,
 		SessionToken: sessionToken,
 		CSRFToken:    csrfToken,
 		UserAgent:    &userAgent,
@@ -143,12 +152,9 @@ func (a *AuthHandler) LoginPost(w http.ResponseWriter, r *http.Request) error {
 		CreatedAt:    time.Now(),
 	}
 
-	sessionRepo := repositories.SessionRepo{DB: a.DB}
-	err = sessionRepo.Insert(session)
+	sessionRepo := repositories.SessionRepo{DB: db}
+	err := sessionRepo.Insert(session)
 	if err != nil {
 		fmt.Println("Failed to insert sesson: %w", err)
 	}
-	http.Redirect(w, r, "/protected", http.StatusSeeOther)
-
-	return err
 }

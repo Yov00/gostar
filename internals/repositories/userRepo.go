@@ -14,10 +14,26 @@ type UserRepo struct {
 	DB *sql.DB
 }
 
-func (u *UserRepo) Insert(user models.User) error {
-	_, err := u.DB.Exec("INSERT INTO users(id,name,email,password,createdOn,updatedOn) values($id,$name,$email,$password,$createdOn,$updatedOn)", user.Id, user.Name, user.Email, user.Password, user.CreatedOn, user.UpdatedOn)
-	fmt.Println(err)
-	return err
+func (u *UserRepo) Insert(user models.User) (uuid.UUID, error) {
+	query := `INSERT INTO users(id,name,email,password,createdOn,updatedOn) 
+							values($id,$name,$email,$password,$createdOn,$updatedOn)
+				RETURNING id
+			`
+	var insertedUUID uuid.UUID
+	err := u.DB.QueryRow(query,
+		user.Id,
+		user.Name,
+		user.Email,
+		user.Password,
+		user.CreatedOn,
+		user.UpdatedOn,
+	).Scan(&insertedUUID)
+	if err != nil {
+		fmt.Println("insert error:", err)
+		return uuid.Nil, err
+	}
+
+	return insertedUUID, err
 }
 
 func (u *UserRepo) SelectByEmail(email string) (*models.User, error) {
@@ -27,9 +43,11 @@ func (u *UserRepo) SelectByEmail(email string) (*models.User, error) {
 
 	row := u.DB.QueryRow("SELECT id, email, name, createdOn, updatedOn, password  from users WHERE email = ?", strings.TrimSpace(email))
 	err = row.Scan(&user.Id, &user.Email, &user.Name, &createdOnStr, &updatedOnStr, &user.Password)
+	if user.Id == uuid.Nil {
+		return nil, nil
+	}
 
 	layout := "2006-01-02 15:04:05.999999999-07:00"
-
 	user.CreatedOn, err = time.Parse(layout, createdOnStr)
 	if err != nil {
 		return nil, fmt.Errorf("invalid createdOn format: %v", err)
@@ -88,3 +106,17 @@ func (u *UserRepo) GetUserIdByCSRFAndSessionToken(session_token string, csrf str
 
 	return &userId, nil
 }
+
+
+
+
+
+
+var listForTheStore = []string{
+	 "кюфтета",
+	 "Дюнер сос"
+}
+
+
+
+
