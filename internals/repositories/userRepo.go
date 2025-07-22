@@ -106,17 +106,3 @@ func (u *UserRepo) GetUserIdByCSRFAndSessionToken(session_token string, csrf str
 
 	return &userId, nil
 }
-
-
-
-
-
-
-var listForTheStore = []string{
-	 "кюфтета",
-	 "Дюнер сос"
-}
-
-
-
-
